@@ -1,0 +1,213 @@
+<html>
+    <head></head>
+    <body>
+var regUsers =[];
+function loginScreen() {
+    console.log("\nLOGIN SCREEN");
+    console.log("============");
+    let username = prompt("Enter username: ");
+    let password = prompt("Enter password: ");
+    
+    // Check if user is registered
+    let userExists = false;
+    for (let i = 0; i < regUsers.length; i++) {
+      if (regUsers[i].username === username && regUsers[i].password === password) {
+        userExists = true;
+        console.log(`Welcome back, ${username}!`);
+        // Call function to display store options
+        displayOptions();
+        break;
+      }
+    }
+    
+    if (!userExists) {
+      console.log("Invalid username or password. Please try again.");
+      // Call function to display login or register screen again
+      logInOrResgisterScreen();
+    }
+  }  
+function registerScreen(){
+    console.log("Register Screen");
+    var username = prompt("Please enter your username:");
+    var password = prompt("Please enter your password:");
+    var firstname = prompt("What is your first name?");
+    var lastname = prompt("What is your last name?");
+    var address = prompt("What is your address?");
+    var city = prompt("What city do you live in?");
+    var state = prompt("What state do you live in?");
+    var zipcode = prompt("What is your zipcode?");
+    var usernameExist = false;
+    for (var i = 0; i < regUsers.length; i++) {
+        if (regUsers[i].username === username) {
+        alert("Please try a different username.");
+        usernameExist = true;
+        break;
+        }
+    }
+    if (!usernameExist){
+        regUsers.push({username,password, firstname, lastname,address,city,state,zipcode});
+        console.log("Sucessfully registered");
+        loginScreen();
+    }
+}
+function logInOrResgisterScreen(){
+    var choice = prompt("Enter 1 to log in or 2 to register");
+    if (choice === "1"){
+        loginScreen();
+    } else if (choice === "2") {
+        registerScreen();
+    } else {
+        alert("invalid choice");
+        logInOrResgisterScreen();
+    }
+}
+var items =[
+    {name: "bag of apples", price: 4.39},
+    {name: "bell pepper", price: 0.77},
+    {name: "pasta sauce", price : 4.67},
+    {name: "cake mix", price: 1.12},
+    {name: "sprinkles", price: 0.55},
+    {name: "milk", price: 4.65},
+    {name: "bag of chips", price: 2.99},
+    {name: "head of lettuce", price: 1.23},
+    {name: "bread sticks", price: 3.24},
+    {name: "vanilla extract", price: 8.99},
+    {name: "flour", price: 4.15},
+    {name: "dozen cookies", price: 3.50},
+];
+var cart = [];
+function displayStoreOptions(){
+    console.log("The McGeary Market");
+    console.log("====================");
+    console.log("Options");
+    console.log("1. View items");
+    console.log("2. Add items to cart");
+    console.log("3. View cart");
+    console.log("4. Checkout");
+    var choice = prompt ("Select your option");
+    switch(choice){
+        case "1":
+            console.log("Item Selection");
+            console.log("==============");
+            for(var i = 0; i < items.length; i++){
+                console.log(i+1 + ". " + items[i].name + "--" + items[i].price);
+            }
+            console.log("cake mix, flour, milk and vanilla extract are not vailable for delivery");
+            displayStoreOptions();
+            break;
+            case "2":
+            console.log("Add items to cart");
+            console.log("=================");
+            for(var i = 0; i < items.length; i++){
+                console.log(i+1 + ". " + items[i].name + "--" + items[i].price);
+            }
+            var itemChoice = parseInt(prompt("Enter item number"));
+            if(itemChoice >= 1 && itemChoice <= items.length){
+                var selectedItem = items[itemChoice -1];
+                cart.push(selectedItem);
+                console.log("Item added to the cart!");
+            } else {
+                console.log("Invalid item number. Try again.");
+            }
+            displayStoreOptions();
+            break;
+        case "3":
+            console.log("Cart");
+            console.log("====");
+            if (cart.length > 0){
+                var total = 0;
+                for (var i =0; i<cart.length;i++){
+                    console.log(i+1 + " " + cart[i].name + "--" + cart[i].price);
+                    total += cart[i].price;
+                    total = total*1.07;
+                }
+                console.log("the total is: " + total.toFixed(2));
+                displayStoreOptions();
+            } else{
+                alert("Your cart is empty");
+                displayStoreOptions();
+            }
+            break;
+        case "4":
+            if (cart.length > 0){
+                console.log("Check out");
+                console.log("=========");
+                var total=0;
+                for (var i =0; i<cart.length;i++){
+                    console.log(i+1 + " " + cart[i].name + "--" + cart[i].price);
+                    total += cart[i].price;
+                    total = total*1.07;
+                }
+                console.log("Your total is: " + total.toFixed(2));
+                console.log("Delivery method");
+                console.log("===============");
+                console.log("1. Delivery");
+                console.log("2. Pick up");
+                var method = prompt("Pick your method");
+                switch(method){
+                    case "1":
+                        for (var i = 0; i < cart.length; i++){
+                            if(cart[i].name==="cake mix"){
+                                alert("cake mix is not available for delivery");
+                                displayStoreOptions();
+                            } else if(cart[i].name==="flour"){
+                                alert("Flour is not available for deilivery");
+                                displayStoreOptions();
+                            } else if(cart[i].name==="vanilla extract"){
+                                alert("Vanilla extract is not available for delivery");
+                                displayStoreOptions();
+                            } else if(cart[i].name==="milk"){
+                                alert("milk is not available for delivery");
+                                displayStoreOptions();
+                            }                        
+                        }
+                        total = total +7.99;
+                        console.log("Your total is (+7.99 delivery fee): "+total);
+                        break;
+                    case "2":
+                        console.log("Your total is: " + total);
+                        break;
+                    default:
+                        alert("Invalid input");
+                        displayStoreOptions();
+                        break;
+                }
+                console.log("Payment method");
+                console.log("==============");
+                console.log("1. Apple Pay");
+                console.log("2. Debit Card");
+                console.log("3. Venmo");
+                console.log("4. Credit card");
+                var paymentMethod = prompt("Select your payment method:");
+                switch(pay){
+                    case "1":
+                        alert("Thank you for shopping with us");
+                        break;
+                        ProcessingInstruction.exit;
+                    case "2":
+                        alert("Thank you for shopping with us");
+                        break;
+                    case "3":
+                        alert("Thank you for shopping with us");
+                        break;
+                    case "4":
+                        alert("Thank you for shopping with us");
+                        break;
+                    default:
+                        alert("Invalid input");
+                        displayStoreOptions();
+                        break;
+                }
+
+            }else {
+                console.log("cart is empty");
+                displayStoreOptions();
+            }
+        default:
+            alert("Invaid option. Choose again");
+            displayStoreOptions();
+            break;
+    }
+}
+  </body>
+</html> 
